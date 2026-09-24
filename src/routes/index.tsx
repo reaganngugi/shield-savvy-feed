@@ -138,7 +138,7 @@ function Dashboard() {
       <ReportScam />
 
       <footer className="border-t border-border/70 py-8 text-center text-xs text-muted-foreground">
-        Built by [Student Name], [School Name] — 2026
+        Built by Daniel, Tamira & Ngugi — 2026
       </footer>
     </div>
   );
