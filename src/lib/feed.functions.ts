@@ -35,7 +35,7 @@ function decodeEntities(input: string): string {
 
 function tag(xml: string, name: string): string {
   const m = xml.match(new RegExp(`<${name}[^>]*>([\\s\\S]*?)</${name}>`, "i"));
-  return m ? decodeEntities(m[1]).trim() : "";
+  return m?.[1] ? decodeEntities(m[1]).trim() : "";
 }
 
 const CRITICAL = [
@@ -159,7 +159,7 @@ async function youtube(): Promise<Alert[]> {
   );
   if (!html) return [];
   const match = html.match(/var ytInitialData = ([\s\S]*?);<\/script>/);
-  if (!match) return [];
+  if (!match?.[1]) return [];
   try {
     const data = JSON.parse(match[1]) as unknown;
     const out: Alert[] = [];
