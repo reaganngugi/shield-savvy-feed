@@ -7,6 +7,7 @@ import { AlertCard } from "@/components/AlertCard";
 import { CheckIt } from "@/components/CheckIt";
 import { Hero } from "@/components/Hero";
 import { ReportScam } from "@/components/ReportScam";
+import { SchoolSection } from "@/components/SchoolSection";
 import { TopBar } from "@/components/TopBar";
 import { fetchAlerts, type Alert } from "@/lib/feed.functions";
 
@@ -136,9 +137,10 @@ function Dashboard() {
       </section>
 
       <ReportScam />
+      <SchoolSection />
 
       <footer className="border-t border-border/70 py-8 text-center text-xs text-muted-foreground">
-        Built by Daniel, Tamira & Ngugi — 2026
+        Built by Daniel, Tamira & Ngugi, Moi High School – Kabarak — 2026
       </footer>
     </div>
   );
