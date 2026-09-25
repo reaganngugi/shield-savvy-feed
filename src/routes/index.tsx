@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { VaultDoorLogo } from "@/components/VaultDoorLogo";
 
 export const Route = createFileRoute("/")({
   component: LoginPage,
@@ -27,8 +28,8 @@ function LoginPage() {
     <main className="flex min-h-screen items-center justify-center bg-[var(--background)] px-4 py-10">
       <div className="w-full max-w-md rounded-3xl border border-border bg-[var(--card)] p-6 shadow-2xl shadow-black/15 sm:p-8">
         <div className="flex items-center justify-center gap-3">
-          <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/15 text-2xl" aria-label="Vault door">
-            🚪
+          <span className="flex size-14 items-center justify-center rounded-2xl bg-primary/15 p-2 text-primary" aria-label="Vault door logo">
+            <VaultDoorLogo className="h-10 w-10" />
           </span>
         </div>
 

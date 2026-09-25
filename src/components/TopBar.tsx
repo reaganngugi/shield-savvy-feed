@@ -1,5 +1,6 @@
 import { Info } from "lucide-react";
 import { useEffect, useState } from "react";
+import { VaultDoorLogo } from "@/components/VaultDoorLogo";
 import { aboutSections, aboutSummary } from "@/lib/about-content";
 
 function agoLabel(iso: string | null): string {
@@ -26,10 +27,8 @@ export function TopBar({ fetchedAt, refreshing }: { fetchedAt: string | null; re
     <header className="sticky top-0 z-30 border-b border-border/70 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <div className="flex items-center gap-2.5">
-          <span className="flex size-9 items-center justify-center rounded-xl bg-primary/15 text-primary">
-            <span className="text-xl" aria-label="Vault door">
-              🚪
-            </span>
+          <span className="flex size-9 items-center justify-center rounded-xl bg-primary/15 p-1.5 text-primary">
+            <VaultDoorLogo className="h-7 w-7" />
           </span>
           <span className="font-display text-lg font-bold tracking-tight">knox by nzoia</span>
         </div>
