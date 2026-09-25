@@ -1,4 +1,4 @@
-# ScamShield 🛡️
+# knox by nzoia 🛡️
 
 A real-time scam alert dashboard that pulls the latest scam, fraud, and phishing
 news from multiple free sources and lets you analyze suspicious messages for
@@ -11,7 +11,7 @@ risk — built as a high school project.
 - **Live Alert Feed** — fetches from four free, no-API-key sources every 5 minutes:
   - Google News RSS (`scam OR fraud OR phishing`)
   - Bing News RSS (`scam warning`)
-  - Reddit `r/scams` JSON (User-Agent `ScamShield/1.0`)
+  - Reddit `r/scams` JSON (User-Agent `knoxbynzoia/1.0`)
   - YouTube public search (`scam alert warning`)
 - **Risk-coded cards** — colored left border by severity:
   red (critical), orange (high), yellow (medium), green (low)

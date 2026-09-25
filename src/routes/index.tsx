@@ -1,147 +1,93 @@
-import { useQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
-import { Loader2, Search } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
-import { AlertCard } from "@/components/AlertCard";
-import { CheckIt } from "@/components/CheckIt";
-import { Hero } from "@/components/Hero";
-import { ReportScam } from "@/components/ReportScam";
-import { SchoolSection } from "@/components/SchoolSection";
-import { TopBar } from "@/components/TopBar";
-import { fetchAlerts, type Alert } from "@/lib/feed.functions";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "ScamShield — Real-Time Scam Alert Dashboard" },
-      {
-        name: "description",
-        content:
-          "Live scam, fraud and phishing alerts from news, Reddit and YouTube, plus an instant risk check for any suspicious message.",
-      },
-      { property: "og:title", content: "ScamShield — Stay One Step Ahead of Scammers" },
-      {
-        property: "og:description",
-        content:
-          "A real-time scam alert feed with an AI-powered risk breakdown for suspicious messages.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: Dashboard,
+  component: LoginPage,
 });
 
-type Cache = { alerts: Alert[]; fetchedAt: string };
-const CACHE_KEY = "scamshield.feed";
-const TABS = ["All", "News", "Reddit", "YouTube", "High Risk Only"] as const;
-type Tab = (typeof TABS)[number];
+function LoginPage() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-function Dashboard() {
-  const load = useServerFn(fetchAlerts);
-  const [cached, setCached] = useState<Cache | null>(null);
-  const [tab, setTab] = useState<Tab>("All");
-  const [query, setQuery] = useState("");
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(CACHE_KEY);
-      if (raw) setCached(JSON.parse(raw) as Cache);
-    } catch {
-      /* ignore unreadable cache */
+    if (!email.trim() || !password.trim()) {
+      setError("Please enter both your email and password.");
+      return;
     }
-  }, []);
 
-  const { data, isFetching } = useQuery<Cache>({
-    queryKey: ["alerts"],
-    queryFn: async () => {
-      const result = (await load()) as Cache;
-      try {
-        localStorage.setItem(CACHE_KEY, JSON.stringify(result));
-      } catch {
-        /* storage blocked */
-      }
-      return result;
-    },
-    refetchInterval: 5 * 60 * 1000,
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const feed = data ?? cached;
-  const alerts = feed?.alerts ?? [];
-
-  const visible = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return alerts.filter((a) => {
-      if (tab === "High Risk Only" && a.risk !== "high" && a.risk !== "critical") return false;
-      if (tab !== "All" && tab !== "High Risk Only" && a.source !== tab) return false;
-      if (q && !`${a.title} ${a.summary}`.toLowerCase().includes(q)) return false;
-      return true;
-    });
-  }, [alerts, tab, query]);
+    setError("");
+    navigate({ to: "/dashboard" });
+  };
 
   return (
-    <div className="min-h-screen">
-      <TopBar fetchedAt={feed?.fetchedAt ?? null} refreshing={isFetching && !feed} />
-      <Hero alertCount={alerts.length} />
-      <CheckIt />
+    <main className="flex min-h-screen items-center justify-center bg-[var(--background)] px-4 py-10">
+      <div className="w-full max-w-md rounded-3xl border border-border bg-[var(--card)] p-6 shadow-2xl shadow-black/15 sm:p-8">
+        <div className="flex items-center justify-center gap-3">
+          <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/15 text-2xl" aria-label="Vault door">
+            🚪
+          </span>
+        </div>
 
-      <section id="feed" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-6 sm:px-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-xl font-bold sm:text-2xl">Live Alert Feed</h2>
-          <div className="relative w-full sm:max-w-xs">
-            <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+        <div className="mt-6 text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-primary">Secure access</p>
+          <h1 className="mt-3 text-3xl font-bold text-foreground">knox by nzoia</h1>
+        </div>
+
+        <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+          <div>
+            <label htmlFor="email" className="mb-2 block text-sm font-medium text-foreground">
+              Email
+            </label>
             <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search alerts by keyword"
-              aria-label="Search alerts by keyword"
-              className="w-full rounded-xl border border-input bg-background py-2.5 pr-3 pl-9 text-sm outline-none focus:border-primary/60 focus:ring-2 focus:ring-ring/40"
+              id="email"
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="name@example.com"
+              className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none placeholder:text-muted-foreground transition focus:border-primary/60 focus:ring-2 focus:ring-ring/40"
             />
           </div>
+
+          <div>
+            <label htmlFor="password" className="mb-2 block text-sm font-medium text-foreground">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="Enter your password"
+              className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none placeholder:text-muted-foreground transition focus:border-primary/60 focus:ring-2 focus:ring-ring/40"
+            />
+          </div>
+
+          {error && <p className="text-sm text-[var(--critical)]">{error}</p>}
+
+          <button
+            type="submit"
+            className="inline-flex w-full items-center justify-center rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition duration-200 hover:-translate-y-0.5 hover:bg-primary/90"
+          >
+            Log in
+          </button>
+        </form>
+
+        <button
+          type="button"
+          onClick={() => navigate({ to: "/dashboard" })}
+          className="mt-3 inline-flex w-full items-center justify-center rounded-xl border border-primary/40 bg-primary/5 px-5 py-3 text-sm font-semibold text-primary transition duration-200 hover:-translate-y-0.5 hover:bg-primary/10"
+        >
+          Continue as guest
+        </button>
+
+        <div className="mt-6 rounded-2xl border border-border bg-surface/70 p-4 text-sm text-muted-foreground">
+          Sign in to monitor scam alerts, test suspicious messages, and review the latest safety insights.
         </div>
-
-        <div className="mt-4 flex flex-wrap gap-2">
-          {TABS.map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={() => setTab(t)}
-              className={`rounded-full border px-4 py-1.5 text-sm font-medium transition ${
-                tab === t
-                  ? "border-primary bg-primary/15 text-primary"
-                  : "border-border bg-surface text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
-
-        <div className="mt-5 grid gap-3">
-          {!feed && isFetching && (
-            <p className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-border px-4 py-10 text-sm text-muted-foreground">
-              <Loader2 className="size-4 animate-spin" /> Pulling the latest scam alerts…
-            </p>
-          )}
-          {feed && visible.length === 0 && (
-            <p className="rounded-xl border border-dashed border-border px-4 py-10 text-center text-sm text-muted-foreground">
-              No alerts match this filter yet.
-            </p>
-          )}
-          {visible.map((alert) => (
-            <AlertCard key={alert.id} alert={alert} />
-          ))}
-        </div>
-      </section>
-
-      <ReportScam />
-      <SchoolSection />
-
-      <footer className="border-t border-border/70 py-8 text-center text-xs text-muted-foreground">
-        Built by Daniel, Tamira & Ngugi, Moi High School – Kabarak — 2026
-      </footer>
-    </div>
+      </div>
+    </main>
   );
 }

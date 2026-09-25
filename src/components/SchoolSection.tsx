@@ -28,7 +28,7 @@ export function SchoolSection() {
           ))}
         </dl>
         <p className="mt-6 text-sm text-muted-foreground">
-          ScamShield is a student project helping the Kabarak community and beyond stay safe online. The class of
+          knox by nzoia is a student project helping the Kabarak community and beyond stay safe online. The class of
           2022 set a school record of 33 A's in KCSE.{" "}
           <a href="https://www.mhskabarak.sc.ke/" target="_blank" rel="noreferrer" className="text-primary underline">
             Visit the school website

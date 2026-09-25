@@ -14,7 +14,7 @@ export type Alert = {
   risk: RiskLevel;
 };
 
-const UA = "ScamShield/1.0";
+const UA = "knoxbynzoia/1.0";
 
 function stripHtml(input: string): string {
   return decodeEntities(input.replace(/<[^>]*>/g, " "))

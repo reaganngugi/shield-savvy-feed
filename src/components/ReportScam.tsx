@@ -9,7 +9,7 @@ export type CommunityReport = {
   createdAt: string;
 };
 
-const STORAGE_KEY = "scamshield.reports";
+const STORAGE_KEY = "knoxbynzoia.reports";
 const HOW_OPTIONS = [
   { value: "news", label: "News" },
   { value: "friend", label: "A friend" },
